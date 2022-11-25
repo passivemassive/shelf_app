@@ -52,6 +52,7 @@ public class TransactionConsumer {
 		else {				
 				LOGGER.info(String.format("Transaction is succesful %s",transactions.get(transactions.size()-1).toString()));
 			}			
+		
 		}			
 	}		
 
