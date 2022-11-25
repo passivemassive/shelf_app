@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 import com.shelf.Core.models.Transaction;
 
 
-
-
-
 @Service
 public class TransactionConsumer {
 
@@ -25,6 +22,7 @@ public class TransactionConsumer {
 	
 
 	private List<Transaction> transactions = new ArrayList<Transaction>();
+	
 	
 	private long seconds;
 	
@@ -36,25 +34,25 @@ public class TransactionConsumer {
 		
 		transactions.add(transaction);
 		LOGGER.info(String.format("Length of the queue is  %d",transactions.size()));
-		if(transactions.size()>2) {
+		List<Transaction> transactionOne = transactions.stream().filter(t -> t.getTransactionId()==2).collect(Collectors.toList());		
+		if(transactionOne.size()>=2) {			
 			
-			if(transactions.get(transactions.size()-1).getTransactionId()==transaction.getTransactionId())
-			{
-				time1 = transactions.get(transactions.size()-1).getTimeCreated();
-				time2 = transactions.get(transactions.size()-2).getTimeCreated();		
+				time1 = transactionOne.get(transactionOne.size()-1).getTimeCreated();
+				time2 = transactionOne.get(transactionOne.size()-2).getTimeCreated();		
 				seconds = ChronoUnit.SECONDS.between(time2, time1);
-				if(seconds>2)
+				if(seconds<2)
 				{
-					LOGGER.info(String.format(" last transaction for this transaction Id was  %d seconds before",seconds));
-					LOGGER.info(String.format("Transaction succesful %s",transactions.toString()));
-				}			
-				
-			}
-			else {
-				
-				LOGGER.info(String.format("Transaction succesful %s",transactions.toString()));
+					LOGGER.info(String.format(" Transactions are rapidly happening (within %d seconds)",seconds));					
+				}	
+				else {
+					LOGGER.info(String.format(" last transaction for this transaction Id was  %d seconds before",seconds));	
+					LOGGER.info(String.format("Transaction with the current ID succesful %s",transactionOne.get(transactions.size()-1).toString()));
+				}
+			}		
+		else {				
+				LOGGER.info(String.format("Transaction is succesful %s",transactions.get(transactions.size()-1).toString()));
 			}			
 		}			
 	}		
-}
+
 

@@ -46,6 +46,7 @@ public class TransactionController {
 		userList = new ArrayList<User>();
 		this.userSelection = new ArrayList<Boolean>();
 		transaction.setUser(user);
+		transaction.setTransactionId(user.getUserId());		
 		userList.add(user);
 		user= new User(2,"burd",300);
 		userList.add(user);
@@ -56,10 +57,8 @@ public class TransactionController {
 		boolean userBoolean[] = { true, true, false};
 		this.userSelection = Booleans.asList(userBoolean);
 		transaction.setUserSelection(userSelection);
-		transaction.setTimeCreated(LocalDateTime.now());
-		transaction.setTransactionId(2);					
-		transactionProducer.sendMessage(transaction);		
-		
+		transaction.setTimeCreated(LocalDateTime.now());					
+		transactionProducer.sendMessage(transaction);				
 		return "Transaction is successful";			
 	}
 }
