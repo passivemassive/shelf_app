@@ -27,28 +27,21 @@ public class TransactionController {
 	
 	public TransactionController(TransactionProducer transactionProducer) {
 		this.transactionProducer = transactionProducer;
-	}
+	}	
 	
-	@PostMapping("/orders/1")
-	public String UserTransaction1(@RequestBody Transaction transaction) {
-		
-		transaction.setTransactionId(1);					
-		transactionProducer.sendMessage(transaction);		
-		
-		return "Transaction is successful";		
-	}
 	
-	@PostMapping("/orders/2")
+	@PostMapping("/orders")
 	public String Usertransaction2(@RequestBody User user) {
 		
-		
+		//Hardcoded values for now
+		//refer to core Postgres which uses db and services to access data
 		transaction = new Transaction();
 		userList = new ArrayList<User>();
 		this.userSelection = new ArrayList<Boolean>();
 		transaction.setUser(user);
 		transaction.setTransactionId(user.getUserId());		
 		userList.add(user);
-		user= new User(2,"burd",300);
+		user= new User(1,"burd",300);
 		userList.add(user);
 		user= new User(3,"snoop",500);
 		userList.add(user);

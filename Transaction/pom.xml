@@ -37,6 +37,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+		    <groupId>org.apache.kafka</groupId>
+		    <artifactId>kafka-streams</artifactId>
+		    <version>3.3.1</version>
+		</dependency> 
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava-primitives</artifactId>
 			<version>r03</version>
