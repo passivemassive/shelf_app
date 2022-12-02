@@ -1,0 +1,15 @@
+spring.application.name: redTransactions
+spring.kafka:
+  bootstrap-servers: localhost:9092  
+  producer:
+    bootstrap-servers: localhost:9092
+    key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  streams:
+    properties:
+      default.key.serde: org.apache.kafka.common.serialization.Serdes$IntegerSerde
+      default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+      spring.json.trusted.packages: "*"
+    state-dir: /tmp/kafka-streams/
+
+spring.output.ansi.enabled: ALWAYS
