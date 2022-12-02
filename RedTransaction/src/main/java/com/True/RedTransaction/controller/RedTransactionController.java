@@ -45,18 +45,20 @@ public class RedTransactionController {
     	{
     		int k =redTransaction.getRedMessageId();
     		long seconds = ChronoUnit.SECONDS.between(redTransactionStore.get(k).getTimeCreated(), redTransaction.getTimeCreated());
-    		if(seconds>2)
-    		{    			
+    		if(seconds>2)    		  			
+    		//here instead of logging we can also stream it into another topic
     			LOGGER.info(String.format("This is a payload update for id %d and value %s", redTransaction.getRedMessageId(),redTransaction.getRedMessage()));
-    		}
+    		
+    		// here the payload is updated but not shown in output rather this message is shown
     		else
-    			LOGGER.info(String.format("Payload update for id %d is very frequent ", k));
-    		template.send("red-transaction", redTransaction.getRedMessageId(), redTransaction);    		
-    	}
+    			LOGGER.info(String.format("Payload update for id %d is very frequent ", k));  
+    		//all transactions are sent to the stream      		 
+       	}
     	else {
-    		template.send("red-transaction", redTransaction.getRedMessageId(), redTransaction);
-        	LOGGER.info(String.format("Sent Payload with id %d and value %s", redTransaction.getRedMessageId(),redTransaction.getRedMessage()));
+    		//if the transactionId doesn't previous exist    		
+        	LOGGER.info(String.format("Sent New Payload with id %d and value %s", redTransaction.getRedMessageId(),redTransaction.getRedMessage()));
     	}    	
+    	template.send("red-transaction", redTransaction.getRedMessageId(), redTransaction);
     	return redTransaction;
     }
     
